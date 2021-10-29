@@ -3,6 +3,8 @@ $("#SEF-cancel-btn").on("click", function() {
 });
 
 $("#save-enc-section").removeAttr("style").hide();
+// $("#btn-save-enc").removeAttr("style").hide();
+$("#btn-show-enc").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
 
@@ -54,34 +56,70 @@ $("#btn-export-key").on("click", (e) => {
   window.api.downloadPublicKey(keyFile.name);
 });
 
+// $("#btn-encrypt").on("click", function (e) {
+//   e.preventDefault();
+
+//   let keyFile =
+//     savedKeys.find((key) => key.name == $("#sel-keys").val());
+//   if (new RegExp("private|pvt").test(keyFile.name)) {
+//     window.api
+//       .findPublicKey(keyFile.name)
+//       .then((k) => {
+//         console.log(k);
+//         encryptWithKey(k);
+//       })
+//       .catch(alert);
+//   } else {
+//     encryptWithKey(keyFile);
+//   }
+// });
+
 $("#btn-encrypt").on("click", function (e) {
   e.preventDefault();
 
-  let keyFile =
-    savedKeys.find((key) => key.name == $("#sel-keys").val());
+  console.log("1. values assigned")
+  let vpnUN = $("#vpn-un").val();
+  let vpnPW = $("#vpn-pw").val();
+  let vpnConfig = $("#vpn-config").val();
+  window.api.writeVpn(vpnUN, vpnPW, vpnConfig)
+  console.log("3. values sent")
+
+  let keyFile = savedKeys2.find((key) => key.name == $("#sel-keys2").val());
+
+  window.api.vpnZip().then(bindKeys3).catch(alert);
+
+  // const plainFile = savedKeys3.find((file) => file.name == $("#sel-keys3").val());
+  // var z = document.getElementById("sel-keys3");
+  // var plainFiles = z.options[z.selectedIndex].text;
+
+  var plainFiles = $( "#sel-keys3 option:selected" ).text();
+  console.log(plainFiles);
+
   if (new RegExp("private|pvt").test(keyFile.name)) {
     window.api
-      .findPublicKey(keyFile.name)
+      .findPublicKey2(keyFile.name)
       .then((k) => {
         console.log(k);
-        encryptWithKey(k);
+        encryptWithKey(k, plainFile);
       })
       .catch(alert);
-  } else {
-    encryptWithKey(keyFile);
+    } else {
+      encryptWithKey(keyFile, plainFile);
   }
+
+  // setTimeout(() => {  encryptWithKey(keyFile); }, 3000);
 });
 
-// $("#btn-show-enc").on("click", function (e) {
-//   e.preventDefault();
-//   const abc = window.api.crypto
-//     .armorMessage(lastEncryptedMessage)
-//     .then((armoredMessage) => {
-//       $("#msg-encrypted").val(armoredMessage);
-//     })
-//     .catch(alert);
-//   console.log(abc);
-// });
+$("#btn-show-enc").on("click", function (e) {
+  e.preventDefault();
+  const abc = window.api.crypto
+    .armorMessage(lastEncryptedMessage)
+    .then((armoredMessage) => {
+      $("#msg-encrypted").val(armoredMessage);
+    })
+    .catch(alert);
+  console.log(abc);
+});
 
 $("#btn-save-enc").on("click", function (e) {
   e.preventDefault();
@@ -89,11 +127,11 @@ $("#btn-save-enc").on("click", function (e) {
   const element = document.createElement("a");
   const file = new Blob([lastEncryptedMessage], { type: "application/pgp-encrypted" });
   element.href = URL.createObjectURL(file);
-  element.download = lastEncryptedMessage.path ?? "EncryptedFile.gpg";
+  element.download = lastEncryptedMessage.path ?? "EncryptedConfig.zip.gpg";
   element.click();
 });
 
-function encryptWithKey(keyFile) {
+function encryptWithKey(keyFile, plainFile) {
   if (!keyFile) {
     alert("Please select a public key from list or import from file");
     return;
@@ -108,38 +146,38 @@ function encryptWithKey(keyFile) {
     return;
   }
 
-  const plainFile = document.getElementById("file-plain").files[0];
+  // window.api.vpnZip().then(bindKeys3).catch(alert);
+
+  // let plainFile = savedKeys3.find((file) => file.name == $("#sel-keys3").val());
+
+  // let plainFile = setTimeout(() => {  savedKeys3.find((file) => file.name == $("#sel-keys3").val()) }, 3000);
+
+  // const plainFile = document.getElementById("sel-keys3").val();
+  // const plainFile = document.getElementById("file-plain").files[0];
+  // const plainFile = $("#sel-keys3").val();
   // const plainMessage = $("#msg-plain").val();
   if (plainFile) {
     $("#btn-encrypt").removeAttr("style").hide();
     $("#save-enc-section").removeAttr("style").hide();
     $("#processing").show();
+    console.log(keyFile.path);
     console.log(plainFile);
+    console.log(plainFile.name);
+    console.log(plainFile.path);
     window.api.crypto
       .encryptFile(keyFile.path, keyType == 0, plainFile.path)
       .then((encryptedMessage) => {
         console.log(encryptedMessage);
         lastEncryptedMessage = encryptedMessage;
         alert("File was encrypted successfully. Remember to Save it!");
-        $("#save-enc-section").show();
+        $("##save-enc-section").show();
         $("#processing").removeAttr("style").hide();
         $("#btn-encrypt").show();
       })
       .catch(alert);
     return;
-  // } else if (plainMessage && !plainMessage.empty) {
-  //   console.log(plainMessage);
-  //   window.api.crypto
-  //     .encryptText(keyFile.path, keyType == 0, plainMessage)
-  //     .then((encryptedMessage) => {
-  //       console.log(encryptedMessage);
-  //       lastEncryptedMessage = encryptedMessage;
-  //       alert("Data was encrypted successfully. Remember Save it!");
-  //     })
-  //     .catch(alert);
-  //   return;
   } else {
-    alert("Please provide an plain file or paste in text box");
+    alert("Please provide a plain file or paste in text box");
     return;
   }
 }
@@ -168,6 +206,28 @@ function bindKeys(files = []) {
   });
 }
 
+function bindKeys2(files = []) {
+  $("#sel-keys2").empty();
+  savedKeys2 = files
+    .filter((file) => new RegExp("private|pvt").test(file.name))
+    .map(fileToKey);
+  savedKeys2.forEach((key) => {
+    $("#sel-keys2").append(new Option(key.title, key.name));
+  });
+}
+
+function bindKeys3(files = []) {
+  $("#sel-keys3").empty();
+  savedKeys3 = files
+    .filter((file) => new RegExp("ConfigFiles").test(file.name))
+    .map(filesToFile)
+  console.log(files);
+  savedKeys3.forEach((file) => {
+    console.log(file);
+    $("#sel-keys3").append(new Option(file));
+  });
+}
+
 function fileToKey(file) {
   let fileElements = file.name.split("-");
   fileElements.pop();
@@ -177,8 +237,16 @@ function fileToKey(file) {
     path: file.path,
   };
 }
+function filesToFile(file) {
+  return {
+    name: file.name,
+    path: file.path,
+  };
+}
 
 let savedKeys = [];
+let savedKeys2 = [];
+let savedKeys3 = [];
 let lastPlainMessage;
 let lastEncryptedMessage;
 
@@ -189,6 +257,7 @@ window.api.onReloadKeys((args) => {
 
 (() => {
   window.api.listKeys().then(bindKeys).catch(alert);
+  window.api.vpnKey().then(bindKeys2).catch(alert);
 })();
 
 function toHex(buffer) {

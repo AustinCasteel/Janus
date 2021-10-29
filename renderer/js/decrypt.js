@@ -124,7 +124,7 @@ $("#SEF-cancel-btn").on("click", function() {
 //   window.api.listKeys().then(bindKeys).catch(alert);
 // })();
 
-$("#btn-save").removeAttr("style").hide();
+$("#save-dec-section").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
 
@@ -206,7 +206,7 @@ $("#btn-decrypt").on("click", function (e) {
   // const encMessage = $("#txt-encrypted").val();
   if (encFile) {
     $("#btn-decrypt").removeAttr("style").hide();
-    $("#btn-save").removeAttr("style").hide();
+    $("#save-dec-section").removeAttr("style").hide();
     $("#processing").show();
     console.log(encFile);
     window.api.crypto
@@ -215,7 +215,7 @@ $("#btn-decrypt").on("click", function (e) {
         console.log(plainFile);
         lastPlainMessage = plainFile;
         alert("File was decrypted successfully. Remember to Save it!");
-        $("#btn-save").show();
+        $("#save-dec-section").show();
         $("#processing").removeAttr("style").hide();
         $("#btn-decrypt").show();
       })

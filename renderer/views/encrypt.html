@@ -22,17 +22,6 @@
           <label for="sel-key">Stored keys:</label><br />
           <select class="form-control" id="sel-keys"></select>
         </div>
-        <div id="pw" class="col">
-          <div class="col">
-            <label for="txt-passphrase">Please enter key password:</label>
-            <input class="form-control"
-              type="password"
-              id="txt-passphrase"
-              placeholder="Secured Key Password"
-              required
-            />
-          </div>
-        </div>
       </div>
     </div>
     <br />
@@ -41,7 +30,7 @@
       <h4>Encryption:</h4>
       <div class="container">
         <div class="form-row">
-          <div class="col-4 align-self-center">
+          <div class="col-4 align-self-center text-center">
             <label for="file-plain">Plain file:</label>
             <input type="file" id="file-plain" />
             <br /><br />
@@ -53,11 +42,11 @@
               id="msg-plain"
             ></textarea> -->
           </div>
-          <div class="col-4 align-self-center">
+          <div class="col-4 align-self-center text-center">
             <button class="btn btn-primary btn-lg" id="btn-encrypt">Encrypt</button>
             <img src="../img/245.gif" loop=infinite id="processing">
           </div>
-          <div class="col-4 align-self-center">
+          <div id="save-enc-section" class="col-4 align-self-center text-center">
             <label>Encrypted file:</label><br />
             <!-- <button class="btn btn-primary" id="btn-show-enc">View</button> -->
             <button class="btn btn-success" id="btn-save-enc">Save</button

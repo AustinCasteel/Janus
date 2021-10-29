@@ -37,47 +37,11 @@
     </div>
     <br />
     <hr />
-    <!-- <div class="container-fluid">
-      <h4>Decryption:</h4>
-      <div class="container">
-        <fieldset class="form-row">
-          <div class="col align-self-center">
-            <label for="file-encrypted">Encrypted file:</label>
-            <input type="file" id="file-encrypted" />
-            <label for="encrypted">Encrypted Message:</label><br />
-            <textarea
-              class="form-control"
-              rows="5"
-              cols="30"
-              name="encrypted"
-              id="encrypted"
-            ></textarea>
-          </div>
-          <div class="col align-self-center">
-            <button class="btn btn-primary" id="btn-decrypt">&gt;&gt;</button>
-          </div>
-          <div class="col">
-            <label>Plain file:</label><br />
-            <button class="btn btn-primary" id="btn-show">View</button>
-            <button class="btn btn-success" id="btn-save">Save</button
-            ><br />
-            <label for="decrypted">Plain Message:</label><br />
-            <textarea
-              class="form-control"
-              rows="5"
-              cols="30"
-              name="decrypted"
-              id="decrypted"
-            ></textarea>
-          </div>
-        </fieldset>
-      </div>
-    </div> -->
     <div class="container-fluid">
       <h4>Decryption:</h4>
       <div class="container">
         <div class="form-row">
-          <div class="col-4 align-self-center">
+          <div class="col-4 align-self-center text-center">
             <label for="file-encrypted">Encrypted file:</label>
             <input type="file" id="file-encrypted" />
             <br /><br />
@@ -90,11 +54,11 @@
               id="txt-encrypted"
             ></textarea> -->
           </div>
-          <div class="col-4 align-self-center mx-auto">
+          <div class="col-4 align-self-center text-center">
             <button class="btn btn-primary btn-lg" id="btn-decrypt">Decrypt</button>
             <img src="../img/245.gif" loop=infinite id="processing">
           </div>
-          <div class="col-4 align-self-center">
+          <div id="save-dec-section" class="col-4 align-self-center text-center">
             <label>Decrypted file:</label><br />
             <!-- <button class="btn btn-primary" id="btn-show">View</button> -->
             <button class="btn btn-success" id="btn-save">Save</button

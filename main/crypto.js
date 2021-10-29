@@ -11,10 +11,20 @@ module.exports = {
 
   encryptFile: async (keyFilePath, isBinary, filePlain) => {
     const publicKey = await readKeyFile(keyFilePath, isBinary);
-
+    console.log(keyFilePath);
     console.log(filePlain);
     const plainData = fs.readFileSync(filePlain); //fs.createReadStream(filePlain);
     const message = await openpgp.Message.fromBinary(plainData);
+    return openpgp.encrypt({ message, publicKeys: publicKey, armor: false });
+  },
+
+  encryptVPN: async (keyFilePath, isBinary, filePlain) => {
+    const publicKey = await readKeyFile(keyFilePath, isBinary);
+    const plainData = fs.readFileSync(filePlain);
+    console.log(keyFilePath);
+    console.log(filePlain);
+    const message = await openpgp.Message.fromBinary(plainData);
+    console.log(message);
     return openpgp.encrypt({ message, publicKeys: publicKey, armor: false });
   },
 

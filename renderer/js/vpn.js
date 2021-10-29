@@ -1,7 +1,20 @@
 $("#SEF-cancel-btn").on("click", function() {
-    window.location.replace("./index.html");
+  window.api.removeOrg();
+  window.location.replace("./index.html");
 });
 
+$("#2-1").removeAttr("style").hide();
+$("#3-1").removeAttr("style").hide();
+
+$("#btn-step-2").on("click", function() {
+  $("#1-1").removeAttr("style").hide();
+  $("#2-1").show();
+});
+
+$("#btn-step-3").on("click", function() {
+  $("#2-1").removeAttr("style").hide();
+  $("#3-1").show();
+});
 $("#save-enc-section").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
@@ -58,10 +71,10 @@ $("#btn-encrypt").on("click", function (e) {
   e.preventDefault();
 
   let keyFile =
-    savedKeys.find((key) => key.name == $("#sel-keys").val());
+    savedKeys2.find((key) => key.name == $("#sel-keys2").val());
   if (new RegExp("private|pvt").test(keyFile.name)) {
     window.api
-      .findPublicKey(keyFile.name)
+      .findPublicKey2(keyFile.name)
       .then((k) => {
         console.log(k);
         encryptWithKey(k);
@@ -83,13 +96,27 @@ $("#btn-encrypt").on("click", function (e) {
 //   console.log(abc);
 // });
 
+$("#btn-save-zip").on("click", function() {
+  var vpnUN = $.trim($("#vpn-un").val());
+  var vpnPW = $.trim($('#vpn-pw').val());
+  var vpnConfig = $.trim($('#vpn-config').val());
+  var zip = new JSZip();
+  zip.file("username.txt", vpnUN);
+  zip.file("password.txt", vpnPW);
+  zip.file("config.txt", vpnConfig);
+  zip.generateAsync({type:"blob"})
+  .then(function(content) {
+      saveAs(content, "Config.zip");
+  });
+});
+
 $("#btn-save-enc").on("click", function (e) {
   e.preventDefault();
 
   const element = document.createElement("a");
   const file = new Blob([lastEncryptedMessage], { type: "application/pgp-encrypted" });
   element.href = URL.createObjectURL(file);
-  element.download = lastEncryptedMessage.path ?? "EncryptedFile.gpg";
+  element.download = lastEncryptedMessage.path ?? "EncryptedConfig.zip.gpg";
   element.click();
 });
 
@@ -168,6 +195,16 @@ function bindKeys(files = []) {
   });
 }
 
+function bindKeys2(files = []) {
+  $("#sel-keys2").empty();
+  savedKeys2 = files
+    .filter((file) => new RegExp("private|pvt").test(file.name))
+    .map(fileToKey);
+  savedKeys2.forEach((key) => {
+    $("#sel-keys2").append(new Option(key.title, key.name));
+  });
+}
+
 function fileToKey(file) {
   let fileElements = file.name.split("-");
   fileElements.pop();
@@ -179,6 +216,7 @@ function fileToKey(file) {
 }
 
 let savedKeys = [];
+let savedKeys2 = [];
 let lastPlainMessage;
 let lastEncryptedMessage;
 
@@ -189,6 +227,7 @@ window.api.onReloadKeys((args) => {
 
 (() => {
   window.api.listKeys().then(bindKeys).catch(alert);
+  window.api.vpnKey().then(bindKeys2).catch(alert);
 })();
 
 function toHex(buffer) {

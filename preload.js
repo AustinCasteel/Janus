@@ -28,11 +28,35 @@ contextBridge.exposeInMainWorld("api", {
   writeKey: (name, private, public) => {
     return ipcRenderer.invoke("app:on-key-add", name, private, public);
   },
+  writeVpn: (username, password, config) => {
+    return ipcRenderer.invoke("app:on-vpn-add", username, password, config);
+  },
+  // writeOrg: (key) => {
+  //   return ipcRenderer.invoke("app:on-ts-add", key);
+  // },
+  writeOrg: () => {
+    return ipcRenderer.invoke("app:on-ts-add");
+  },
+  removeOrg: () => {
+    return ipcRenderer.invoke("app:on-ts-remove");
+  },
+  getOrg: () => {
+    return ipcRenderer.invoke("app:get-ts-add");
+  },
+  vpnKey: () => {
+    return ipcRenderer.invoke("app:get-ts-key");
+  },
+  vpnZip: () => {
+    return ipcRenderer.invoke("app:get-ts-zip");
+  },
   listKeys: () => {
     return ipcRenderer.invoke("app:get-keys");
   },
   findPublicKey: (keyFile) => {
     return ipcRenderer.invoke("app:find-public-key", keyFile);
+  },
+  findPublicKey2: (keyFile) => {
+    return ipcRenderer.invoke("app:find-public-key2", keyFile);
   },
   downloadPublicKey: (keyFile) => {
     return ipcRenderer.invoke("app:download-public-key", keyFile);

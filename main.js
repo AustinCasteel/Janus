@@ -60,6 +60,34 @@ ipcMain.handle("app:on-file-add", (event, files = []) => {
 ipcMain.handle("app:on-key-add", (event, name, private, public) => {
   io.addKey(name, private, public);
 });
+// 
+ipcMain.handle("app:on-vpn-add", (event, username, password, config) => {
+  io.addVpn(username, password, config);
+});
+// 
+// ipcMain.handle("app:on-ts-add", (event, key) => {
+//   io.addOrg(key);
+// });
+// 
+ipcMain.handle("app:on-ts-add", (event) => {
+  io.addOrg();
+});
+// 
+ipcMain.handle("app:on-ts-remove", (event) => {
+  io.removeOrg();
+});
+// 
+ipcMain.handle("app:get-ts-add", (event) => {
+  io.getOrg();
+});
+// return ts keys
+ipcMain.handle("app:get-ts-key", () => {
+  return io.tsKey();
+});
+// return ts zip
+ipcMain.handle("app:get-ts-zip", () => {
+  return io.tsZip();
+});
 // return list of keys
 ipcMain.handle("app:get-keys", () => {
   return io.getKeys();
@@ -67,6 +95,10 @@ ipcMain.handle("app:get-keys", () => {
 //
 ipcMain.handle("app:find-public-key", (event, private) => {
   return io.findPublicKey(private);
+});
+//
+ipcMain.handle("app:find-public-key2", (event, private) => {
+  return io.findPublicKey2(private);
 });
 //
 ipcMain.handle("app:download-public-key", (event, private) => {

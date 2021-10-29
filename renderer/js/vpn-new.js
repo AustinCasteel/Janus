@@ -2,7 +2,24 @@ $("#SEF-cancel-btn").on("click", function() {
     window.location.replace("./index.html");
 });
 
+$("#2-1").removeAttr("style").hide();
+$("#3-1").removeAttr("style").hide();
+
+$("#btn-step-2").on("click", function() {
+  $("#1-1").removeAttr("style").hide();
+  $("#2-1").show();
+});
+
+$("#btn-step-3").on("click", function() {
+  $("#2-1").removeAttr("style").hide();
+  $("#3-1").show();
+});
+
+
+
 $("#save-enc-section").removeAttr("style").hide();
+// $("#btn-save-enc").removeAttr("style").hide();
+$("#btn-show-enc").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
 
@@ -72,16 +89,38 @@ $("#btn-encrypt").on("click", function (e) {
   }
 });
 
-// $("#btn-show-enc").on("click", function (e) {
+// $("#btn-save-zip").on("click", function (e) {
 //   e.preventDefault();
-//   const abc = window.api.crypto
-//     .armorMessage(lastEncryptedMessage)
-//     .then((armoredMessage) => {
-//       $("#msg-encrypted").val(armoredMessage);
-//     })
-//     .catch(alert);
-//   console.log(abc);
+//   let vpnUN = $("#vpn-un").val();
+//   let vpnPW = $("#vpn-pw").val();
+//   let vpnConfig = $("#vpn-config").val();
+//   window.api.writeVpn(vpnUN, vpnPW, vpnConfig)
 // });
+
+$("#btn-save-zip").on("click", function() {
+  var vpnUN = $.trim($("#vpn-un").val());
+  var vpnPW = $.trim($('#vpn-pw').val());
+  var vpnConfig = $.trim($('#vpn-config').val());
+  var zip = new JSZip();
+  zip.file("username.txt", vpnUN);
+  zip.file("password.txt", vpnPW);
+  zip.file("config.txt", vpnConfig);
+  zip.generateAsync({type:"blob"})
+  .then(function(content) {
+      saveAs(content, "Config.zip");
+  });
+});
+
+$("#btn-show-enc").on("click", function (e) {
+  e.preventDefault();
+  const abc = window.api.crypto
+    .armorMessage(lastEncryptedMessage)
+    .then((armoredMessage) => {
+      $("#msg-encrypted").val(armoredMessage);
+    })
+    .catch(alert);
+  console.log(abc);
+});
 
 $("#btn-save-enc").on("click", function (e) {
   e.preventDefault();
@@ -89,7 +128,7 @@ $("#btn-save-enc").on("click", function (e) {
   const element = document.createElement("a");
   const file = new Blob([lastEncryptedMessage], { type: "application/pgp-encrypted" });
   element.href = URL.createObjectURL(file);
-  element.download = lastEncryptedMessage.path ?? "EncryptedFile.gpg";
+  element.download = lastEncryptedMessage.path ?? "EncryptedConfig.zip.gpg";
   element.click();
 });
 
@@ -112,7 +151,7 @@ function encryptWithKey(keyFile) {
   // const plainMessage = $("#msg-plain").val();
   if (plainFile) {
     $("#btn-encrypt").removeAttr("style").hide();
-    $("#save-enc-section").removeAttr("style").hide();
+    $("#btn-save-enc").removeAttr("style").hide();
     $("#processing").show();
     console.log(plainFile);
     window.api.crypto
@@ -121,7 +160,7 @@ function encryptWithKey(keyFile) {
         console.log(encryptedMessage);
         lastEncryptedMessage = encryptedMessage;
         alert("File was encrypted successfully. Remember to Save it!");
-        $("#save-enc-section").show();
+        $("#btn-save-enc").show();
         $("#processing").removeAttr("style").hide();
         $("#btn-encrypt").show();
       })
@@ -168,6 +207,28 @@ function bindKeys(files = []) {
   });
 }
 
+function bindKeys2(files = []) {
+  $("#sel-keys2").empty();
+  savedKeys2 = files
+    .filter((file) => new RegExp("private|pvt").test(file.name))
+    .map(fileToKey);
+  savedKeys2.forEach((key) => {
+    $("#sel-keys2").append(new Option(key.title, key.name));
+  });
+}
+
+function bindKeys3(files = []) {
+  $("#sel-keys3").empty();
+  savedKeys3 = files
+    .filter((file) => new RegExp("ConfigFiles").test(file.name))
+    .map(filesToFile)
+  console.log(files);
+  savedKeys3.forEach((file) => {
+    console.log(file);
+    $("#sel-keys3").append(new Option(file));
+  });
+}
+
 function fileToKey(file) {
   let fileElements = file.name.split("-");
   fileElements.pop();
@@ -177,8 +238,16 @@ function fileToKey(file) {
     path: file.path,
   };
 }
+function filesToFile(file) {
+  return {
+    name: file.name,
+    path: file.path,
+  };
+}
 
 let savedKeys = [];
+let savedKeys2 = [];
+let savedKeys3 = [];
 let lastPlainMessage;
 let lastEncryptedMessage;
 
@@ -189,6 +258,7 @@ window.api.onReloadKeys((args) => {
 
 (() => {
   window.api.listKeys().then(bindKeys).catch(alert);
+  window.api.vpnKey().then(bindKeys2).catch(alert);
 })();
 
 function toHex(buffer) {

@@ -27,6 +27,18 @@ $("#import-btn-clicked").change(function(){
 $("#export-btn-main").on("click", function() {
   window.location.replace("./export.html");
 });
+$("#vpn-btn-main").on("click", function() {
+  //$("#encrypt-btn-clicked").trigger("click");
+  // window.api.getOrg()
+  //   .then((gottenOrg) => {
+  //     window.api.writeOrg(gottenOrg);
+  //   })
+  //   .catch(alert);
+  // let orgKey = $("#ts-org-key").val();
+  // window.api.writeOrg(orgKey);
+  window.api.writeOrg();
+  window.location.replace("./vpn.html");
+});
 
 $("#tablesearch").keyup(function () {
   // Declare variables
@@ -127,6 +139,12 @@ function bindKeys(files = []) {
   });
 }
 
+function gottenOrg(value) {
+  console.log(value);
+  // setTimeout(() => {  $("#ts-org-key").val(value); }, 2000);
+  // $("#ts-org-key").val(value);
+}
+
 function fileToKey(file) {
   let fileElements = file.name.split("-");
   fileElements.pop();
@@ -148,6 +166,7 @@ window.api.onReloadKeys((args) => {
 
 (() => {
   window.api.listKeys().then(bindKeys).catch(alert);
+  // window.api.getOrg().then(gottenOrg).catch(alert);
 })();
 
 function toHex(buffer) {
