@@ -37,7 +37,9 @@ $("#vpn-btn-main").on("click", function() {
   // let orgKey = $("#ts-org-key").val();
   // window.api.writeOrg(orgKey);
   window.api.writeOrg();
-  window.location.replace("./vpn.html");
+  setTimeout(function(){
+    window.location.replace("./vpn.html");
+  },500);
 });
 
 $("#tablesearch").keyup(function () {
