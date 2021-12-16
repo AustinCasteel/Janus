@@ -28,8 +28,8 @@ contextBridge.exposeInMainWorld("api", {
   writeKey: (name, private, public) => {
     return ipcRenderer.invoke("app:on-key-add", name, private, public);
   },
-  writeVpn: (username, password, config) => {
-    return ipcRenderer.invoke("app:on-vpn-add", username, password, config);
+  writeVpn: (username, password, config, path, type) => {
+    return ipcRenderer.invoke("app:on-vpn-add", username, password, config, path, type);
   },
   // writeOrg: (key) => {
   //   return ipcRenderer.invoke("app:on-ts-add", key);

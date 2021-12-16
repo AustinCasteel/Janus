@@ -3,18 +3,6 @@ $("#SEF-cancel-btn").on("click", function() {
   window.location.replace("./index.html");
 });
 
-$("#2-1").removeAttr("style").hide();
-$("#3-1").removeAttr("style").hide();
-
-$("#btn-step-2").on("click", function() {
-  $("#1-1").removeAttr("style").hide();
-  $("#2-1").show();
-});
-
-$("#btn-step-3").on("click", function() {
-  $("#2-1").removeAttr("style").hide();
-  $("#3-1").show();
-});
 $("#save-enc-section").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
@@ -85,29 +73,44 @@ $("#btn-encrypt").on("click", function (e) {
   }
 });
 
-// $("#btn-show-enc").on("click", function (e) {
-//   e.preventDefault();
-//   const abc = window.api.crypto
-//     .armorMessage(lastEncryptedMessage)
-//     .then((armoredMessage) => {
-//       $("#msg-encrypted").val(armoredMessage);
-//     })
-//     .catch(alert);
-//   console.log(abc);
-// });
+$("#btn-gen-zip").on("click", function (e) {
+  e.preventDefault();
 
-$("#btn-save-zip").on("click", function() {
-  var vpnUN = $.trim($("#vpn-un").val());
-  var vpnPW = $.trim($('#vpn-pw').val());
-  var vpnConfig = $.trim($('#vpn-config').val());
-  var zip = new JSZip();
-  zip.file("username.txt", vpnUN);
-  zip.file("password.txt", vpnPW);
-  zip.file("config.txt", vpnConfig);
-  zip.generateAsync({type:"blob"})
-  .then(function(content) {
-      saveAs(content, "Config.zip");
-  });
+  let keyFile =
+    savedKeys2.find((key) => key.name == $("#sel-keys2").val());
+  if (new RegExp("private|pvt").test(keyFile.name)) {
+    window.api
+      .findPublicKey2(keyFile.name)
+      .then((k) => {
+        console.log(k);
+        encryptWithKey2(k);
+      })
+      .catch(alert);
+  } else {
+    encryptWithKey2(keyFile);
+  }
+});
+
+$("#btn-save-zip").on("click", function (e) {
+  e.preventDefault();
+  let vpnUN = $("#vpn-un").val();
+  let vpnPW = $("#vpn-pw").val();
+  let vpnConfig = $("#vpn-config").val();
+
+  if (!keyFile) {
+    alert("Please select a public key from list or import from file");
+    return;
+  }
+  console.log(keyFile);
+
+  const keyType = getKeyType(keyFile);
+  if (keyType < 0) {
+    alert(
+      "Unknown key file format. Please use *.key for binary or *.asc for armored ASCII"
+    );
+    return;
+  }
+  window.api.writeVpn(vpnUN, vpnPW, vpnConfig, keyFile.path, keyType == 0)
 });
 
 $("#btn-save-enc").on("click", function (e) {
@@ -119,6 +122,32 @@ $("#btn-save-enc").on("click", function (e) {
   element.download = lastEncryptedMessage.path ?? "EncryptedConfig.zip.gpg";
   element.click();
 });
+
+function encryptWithKey2(keyFile) {
+  let vpnUN = $("#vpn-un").val();
+  let vpnPW = $("#vpn-pw").val();
+  let vpnConfig = $("#vpn-config").val();
+
+  if (!keyFile) {
+    alert("Please select a public key from list or import from file");
+    return;
+  }
+  console.log(keyFile);
+
+  const keyType = getKeyType(keyFile);
+  if (keyType < 0) {
+    alert(
+      "Unknown key file format. Please use *.key for binary or *.asc for armored ASCII"
+    );
+    return;
+  }
+  window.api
+    .writeVpn(vpnUN, vpnPW, vpnConfig, keyFile.path, keyType == 0)
+    .then(() => {
+      alert('The Encrypted file was saved to your documents as "EncryptedConfig.zip.gpg"');
+    })
+    .catch(alert);
+}
 
 function encryptWithKey(keyFile) {
   if (!keyFile) {

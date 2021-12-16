@@ -31,6 +31,7 @@
     "electron": "^12.0.0"
   },
   "dependencies": {
+    "adm-zip": "^0.5.9",
     "bootstrap": "^4.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-util": "^0.14.2",

@@ -2,9 +2,11 @@ const { app, dialog } = require("electron");
 const fs = require("fs-extra");
 const path = require("path");
 const dns = require('dns');
+var AdmZip = require("adm-zip");
 
 // local dependencies
 const notification = require("./notification");
+const crypto = require("./crypto");
 
 const userData = app.getPath("userData");
 fs.ensureDirSync(userData);
@@ -47,21 +49,26 @@ exports.addKey = (name, private, public) => {
   notification.filesAdded(2);
 };
 
-exports.addVpn = (username, password, config) => {
-  console.log("5. values received")
-  var zipName = "ConfigFiles.zip"
-  var zipLoc = userData
-  var zipWrite = zipLoc + zipName
+exports.addVpn = (username, password, config, path, type) => {
+  let lastEncryptedMessage;
+  var zipName = "config.zip"
+  var zipLoc = vpnDir
+  var zipWrite = (zipLoc + "\\" + zipName);
   var zip = new AdmZip();
   zip.addFile("username.txt", Buffer.from(username, "utf8"), "");
-  console.log("6.1 Username: "+username)
   zip.addFile("password.txt", Buffer.from(password, "utf8"), "");
-  console.log("6.2 Password: "+password)
   zip.addFile("config.txt", Buffer.from(config, "utf8"), "");
-  console.log("6.3 Config: "+config)
-  console.log("6. files created")
   zip.writeZip(zipWrite);
-  console.log("7. files zipped")
+  crypto.encryptConfig(path, type, zipWrite)
+        .then((encryptedMessage) => {
+          console.log(encryptedMessage);
+          lastEncryptedMessage = encryptedMessage;
+
+          fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
+            if (err) return console.log(err);
+            console.log("saved");
+          });
+        })
 };
 
 // exports.addOrg = (key) => {
@@ -104,26 +111,36 @@ exports.addOrg = () => {
       return result;
     }
     var com2 = addNewlines(com1);
+    var com3 = com2.substring(0, com2.lastIndexOf("="));
+    var com4 = com2.substring(com2.lastIndexOf("="), com2.length);
     var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
     var footer = "-----END PGP PUBLIC KEY BLOCK-----"
     var nl = "\n"
-    var com3 = header+nl+nl+com2+footer;
+    var com5 = header+nl+nl+com3+nl+com4+footer;
     const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
     if (!fs.existsSync(keyPath1)) {
-      fs.writeFileSync(keyPath1, com3);
+      fs.writeFileSync(keyPath1, com5);
     }
     const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
     if (!fs.existsSync(keyPath2)) {
-      fs.writeFileSync(keyPath2, com3);
+      fs.writeFileSync(keyPath2, com5);
     }
   }
 };
 
 exports.removeOrg = () => {
   const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
-  fs.unlinkSync(keyPath1);
+  if (fs.existsSync(keyPath1)) {
+    fs.unlinkSync(keyPath1);
+  }
   const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
-  fs.unlinkSync(keyPath2);
+  if (fs.existsSync(keyPath2)) {
+    fs.unlinkSync(keyPath2);
+  }
+  const configPath = path.resolve(orgDir, `config.zip`);
+  if (fs.existsSync(configPath)) {
+    fs.unlinkSync(configPath);
+  }
 };
 
 exports.getOrg = () => {
@@ -155,21 +172,26 @@ exports.getOrg = () => {
   //     return result;
   //   }
   //   var com2 = addNewlines(com1);
+  //   var com3 = com2.substring(0, com2.lastIndexOf("="));
+  //   var com4 = com2.substring(com2.lastIndexOf("="), com2.length);
   //   var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
   //   var footer = "-----END PGP PUBLIC KEY BLOCK-----"
   //   var nl = "\n"
-  //   var com3 = header+nl+nl+com2+footer;
-  //   console.log(com3);
+  //   var com5 = header+nl+nl+com3+nl+com4+footer;
+
+  //   //console.log(com3);
+  //   //console.log(com2);
+  //   //console.log(com1);
   // }
 };
 
 exports.tsZip = () => {
-  const files = fs.readdirSync(userData);
+  const files = fs.readdirSync(orgDir);
 
   return files
     .filter((file) => [".zip"].includes(path.extname(file)))
     .map((filename) => {
-      const filePath = path.resolve(userData, filename);
+      const filePath = path.resolve(orgDir, filename);
       const fileStats = fs.statSync(filePath);
       return {
         name: filename,

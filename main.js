@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain, Menu, dialog } = require("electron");
 const { openUrlMenuItem, openNewGitHubIssue, debugInfo, showAboutWindow } = require('electron-util');
 const path = require("path");
 const fs = require('fs');
+const io = require("./main/io");
 
 if (require('electron-squirrel-startup')) return;
 
@@ -44,13 +45,12 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", function () {
+  io.removeOrg();
   if (process.platform !== "darwin") app.quit();
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-const io = require("./main/io");
 
 // listen to file(s) add event
 ipcMain.handle("app:on-file-add", (event, files = []) => {
@@ -61,8 +61,8 @@ ipcMain.handle("app:on-key-add", (event, name, private, public) => {
   io.addKey(name, private, public);
 });
 // 
-ipcMain.handle("app:on-vpn-add", (event, username, password, config) => {
-  io.addVpn(username, password, config);
+ipcMain.handle("app:on-vpn-add", (event, username, password, config, path, type) => {
+  io.addVpn(username, password, config, path, type);
 });
 // 
 // ipcMain.handle("app:on-ts-add", (event, key) => {

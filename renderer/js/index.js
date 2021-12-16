@@ -168,7 +168,7 @@ window.api.onReloadKeys((args) => {
 
 (() => {
   window.api.listKeys().then(bindKeys).catch(alert);
-  // window.api.getOrg().then(gottenOrg).catch(alert);
+  //window.api.getOrg().catch(alert);
 })();
 
 function toHex(buffer) {
