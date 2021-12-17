@@ -143,9 +143,9 @@ function encryptWithKey2(keyFile) {
   }
   window.api
     .writeVpn(vpnUN, vpnPW, vpnConfig, keyFile.path, keyType == 0)
-    .then(() => {
-      alert('The Encrypted file was saved to your documents as "EncryptedConfig.zip.gpg"');
-    })
+    // .then(() => {
+    //   alert('The Encrypted file was saved to your documents as "EncryptedConfig.zip.gpg"');
+    // })
     .catch(alert);
 }
 

@@ -104,6 +104,9 @@ ipcMain.handle("app:find-public-key2", (event, private) => {
 ipcMain.handle("app:download-public-key", (event, private) => {
   io.downloadPublicKey(private);
 });
+ipcMain.handle("app:download-private-key", (event, private) => {
+  io.downloadPrivateKey(private);
+});
 
 const menuTemplate = Menu.buildFromTemplate([
   {

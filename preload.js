@@ -61,6 +61,9 @@ contextBridge.exposeInMainWorld("api", {
   downloadPublicKey: (keyFile) => {
     return ipcRenderer.invoke("app:download-public-key", keyFile);
   },
+  downloadPrivateKey: (keyFile) => {
+    return ipcRenderer.invoke("app:download-private-key", keyFile);
+  },
   reloadKeys: () => {
     return ipcRenderer.sendTo(1, "data:reload-keys");
   },

@@ -63,11 +63,29 @@ exports.addVpn = (username, password, config, path, type) => {
         .then((encryptedMessage) => {
           console.log(encryptedMessage);
           lastEncryptedMessage = encryptedMessage;
-
-          fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
-            if (err) return console.log(err);
-            console.log("saved");
+      
+          const filePath = app.getPath('documents') + '/EncryptedConfig.zip.gpg';
+          let options = { 
+            defaultPath: filePath,
+            title: "Save Encrypted VPN Config",
+            buttonLabel: "Save Config File",
+            filters:[
+              {name: 'OpenPGP Encrypted File', extensions: ['gpg', 'pgp']}
+            ]
+          }
+          dialog.showSaveDialog(options).then((result) => {
+            fs.writeFile(result.filePath, lastEncryptedMessage, (err) => {
+            });
+          }).catch((err) => {
+            console.log(err);
+            dialog.showErrorBox("app", "Unable to find encrypted config file.");
           });
+      
+      
+          // fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
+          //   if (err) return console.log(err);
+          //   console.log("saved");
+          // });
         })
 };
 
@@ -294,13 +312,58 @@ exports.downloadPublicKey = (privateKeyName) => {
   try {
     const filePath = path.resolve(keysDir, publicKeyFile);
     const keyContent = fs.readFileSync(filePath);
-    dialog.showSaveDialog(
-      { defaultPath: publicKeyFile, title: "Export Certificates", buttonLabel: "Save Public Key", filters:[{name: 'OpenPGP Certificates', extensions: ['asc', 'key']}]},
-      keyContent,
-      console.log
-    );
+    let options = { 
+      defaultPath: publicKeyFile,
+      title: "Export Certificates",
+      buttonLabel: "Save Public Key",
+      filters:[
+        {name: 'OpenPGP Certificates', extensions: ['asc', 'key']}
+      ]
+    }
+    dialog.showSaveDialog(options).then((result) => {
+      fs.writeFile(result.filePath, keyContent, (err) => {
+      });
+    }).catch((err) => {
+      console.log(err);
+      dialog.showErrorBox("app", "Unable to find public key file.");
+    });
   } catch (err) {
     console.log(err);
     dialog.showErrorBox("app", "Unable to find public key file.");
+  }
+};
+
+exports.downloadPrivateKey = (privateKeyName) => {
+  const files = fs.readdirSync(keysDir);
+  const privateKeyFile = files.find((filename) => {
+    const nameElements = privateKeyName.split("-").pop();
+    const privateName = nameElements.startsWith("private")
+      ? privateKeyName.replace("private", "private")
+      : nameElements.startsWith("pvt")
+      ? privateKeyName.replace("pvt", "pvt")
+      : privateKeyName;
+    return privateName == filename;
+  });
+  try {
+    const filePath = path.resolve(keysDir, privateKeyFile);
+    const keyContent = fs.readFileSync(filePath);
+    let options = { 
+      defaultPath: privateKeyFile,
+      title: "Export Certificates",
+      buttonLabel: "Save Private Key",
+      filters:[
+        {name: 'OpenPGP Certificates', extensions: ['asc', 'key']}
+      ]
+    }
+    dialog.showSaveDialog(options).then((result) => {
+      fs.writeFile(result.filePath, keyContent, (err) => {
+      });
+    }).catch((err) => {
+      console.log(err);
+      dialog.showErrorBox("app", "Unable to find private key file.");
+    });
+  } catch (err) {
+    console.log(err);
+    dialog.showErrorBox("app", "Unable to find private key file.");
   }
 };

@@ -2,6 +2,9 @@ $("#SEF-cancel-btn").on("click", function() {
     window.location.replace("./index.html");
 });
 
+$("#btn-export-pub-key").removeAttr("style").hide();
+$("#btn-export-pvt-key").removeAttr("style").hide();
+
 $("#sel-keys")
   .on("change", () => {
     const keyFile =
@@ -34,9 +37,12 @@ $("#sel-keys")
         $("#txt-key-fp").text(fpr.slice(0, 4) + ' ' + fpr.slice(4, 8) + ' ' + fpr.slice(8, 12) + ' ' + fpr.slice(12, 16) + ' ' + fpr.slice(16, 20) + ' ' + fpr.slice(20, 24) + ' ' + fpr.slice(24, 28) + ' ' + fpr.slice(28, 32) + ' ' + fpr.slice(32, 36) + ' ' + fpr.slice(36));
       })
       .catch(alert);
+
+      $("#btn-export-pub-key").show();
+      $("#btn-export-pvt-key").show();
   });
 
-$("#btn-export-key").on("click", (e) => {
+$("#btn-export-pub-key").on("click", (e) => {
   e.preventDefault();
 
   const keyFile = savedKeys.find((key) => key.name == $("#sel-keys").val());
@@ -46,6 +52,18 @@ $("#btn-export-key").on("click", (e) => {
   }
 
   window.api.downloadPublicKey(keyFile.name);
+});
+
+$("#btn-export-pvt-key").on("click", (e) => {
+  e.preventDefault();
+
+  const keyFile = savedKeys.find((key) => key.name == $("#sel-keys").val());
+  if (!keyFile) {
+    alert("Please select a key pair from list");
+    return;
+  }
+
+  window.api.downloadPrivateKey(keyFile.name);
 });
 
 function getKeyType(keyFile) {
