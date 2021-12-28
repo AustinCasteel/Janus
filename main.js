@@ -69,8 +69,8 @@ ipcMain.handle("app:on-vpn-add", (event, username, password, config, path, type)
 //   io.addOrg(key);
 // });
 // 
-ipcMain.handle("app:on-ts-add", (event) => {
-  io.addOrg();
+ipcMain.handle("app:on-ts-add", (event, apiKey) => {
+  return io.addOrg(apiKey);
 });
 // 
 ipcMain.handle("app:on-ts-remove", (event) => {

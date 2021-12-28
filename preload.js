@@ -34,8 +34,8 @@ contextBridge.exposeInMainWorld("api", {
   // writeOrg: (key) => {
   //   return ipcRenderer.invoke("app:on-ts-add", key);
   // },
-  writeOrg: () => {
-    return ipcRenderer.invoke("app:on-ts-add");
+  writeOrg: (apiKey) => {
+    return ipcRenderer.invoke("app:on-ts-add", apiKey);
   },
   removeOrg: () => {
     return ipcRenderer.invoke("app:on-ts-remove");

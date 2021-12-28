@@ -1,8 +1,8 @@
 const { app, dialog } = require("electron");
 const fs = require("fs-extra");
 const path = require("path");
-const dns = require('dns');
 var AdmZip = require("adm-zip");
+const axios = require('axios').default;
 
 // local dependencies
 const notification = require("./notification");
@@ -89,37 +89,16 @@ exports.addVpn = (username, password, config, path, type) => {
         })
 };
 
-// exports.addOrg = (key) => {
-//   const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
-//   if (!fs.existsSync(keyPath1)) {
-//     fs.writeFileSync(keyPath1, key);
-//   }
-//   const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
-//   if (!fs.existsSync(keyPath2)) {
-//     fs.writeFileSync(keyPath2, key);
-//   }
-// };
-
-exports.addOrg = () => {
-  segment1 = "segmented01.csdsuite.com"
-  segment2 = "segmented11.csdsuite.com"
-  dns.resolveTxt(segment1, (err, data1) => {
-    if(err) throw err;
-    dns.resolveTxt(segment2, (err, data2) => {
-      if(err) throw err;
-      pushResults(data1, data2);
-    });
-  });
-
-  function pushResults(data1, data2){
-    var seg1 = data1;
-    var seg2 = data2;
-    var seg11 = seg1.toString();
-    var seg22 = seg2.toString();
-    var seg111 = seg11.replace(/,/g, '');
-    var seg222 = seg22.replace(/,/g, '');
-    let com = seg111.concat(seg222);
-    let com1 = com.slice(36,-34);
+exports.addOrg = (apiKey) => {
+  const key = apiKey;
+  return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material', {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': key
+    }
+  })
+  .then(function (response) {
+    const material = response.data;
     function addNewlines(str) {
       var result = '';
       while (str.length > 0) {
@@ -128,22 +107,46 @@ exports.addOrg = () => {
       }
       return result;
     }
-    var com2 = addNewlines(com1);
-    var com3 = com2.substring(0, com2.lastIndexOf("="));
-    var com4 = com2.substring(com2.lastIndexOf("="), com2.length);
+    var com1 = addNewlines(material);
+    var com2 = com1.substring(0, com1.lastIndexOf("="));
+    var com3 = com1.substring(com1.lastIndexOf("="), com1.length);
     var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
     var footer = "-----END PGP PUBLIC KEY BLOCK-----"
     var nl = "\n"
-    var com5 = header+nl+nl+com3+nl+com4+footer;
+    var com4 = header+nl+nl+com2+nl+com3+footer;
     const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
-    if (!fs.existsSync(keyPath1)) {
-      fs.writeFileSync(keyPath1, com5);
-    }
     const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
-    if (!fs.existsSync(keyPath2)) {
-      fs.writeFileSync(keyPath2, com5);
+    if (fs.existsSync(keyPath1)) {
+      fs.unlinkSync(keyPath1);
     }
-  }
+    if (fs.existsSync(keyPath2)) {
+      fs.unlinkSync(keyPath2);
+    }
+    if (!fs.existsSync(keyPath1)) {
+      fs.writeFileSync(keyPath1, com4);
+    }
+    if (!fs.existsSync(keyPath2)) {
+      fs.writeFileSync(keyPath2, com4);
+    }
+    return 1
+  })
+  .catch(function (error) {
+    if(error.response.status == 403) {
+      dialog.showErrorBox("TrueKey", "No Key Given");
+      return 0
+    } else if(error.response.status == 401) {
+      dialog.showErrorBox("TrueKey", "Invalid Key");
+      return 0
+    } else if(error.request) {
+      console.log(error.request);
+      return 0
+    } else {
+      console.error('error:', error);
+      console.log('statusCode:', error.response && error.response.status);
+      console.log('body:', error.response.data);
+      throw new Error("see above^^^");
+    }
+  });
 };
 
 exports.removeOrg = () => {
@@ -162,45 +165,50 @@ exports.removeOrg = () => {
 };
 
 exports.getOrg = () => {
-  // segment1 = "segmented01.csdsuite.com"
-  // segment2 = "segmented11.csdsuite.com"
-  // dns.resolveTxt(segment1, (err, data1) => {
-  //   if(err) throw err;
-  //   dns.resolveTxt(segment2, (err, data2) => {
-  //     if(err) throw err;
-  //     pushResults(data1, data2);
-  //   });
-  // });
-
-  // function pushResults(data1, data2){
-  //   var seg1 = data1;
-  //   var seg2 = data2;
-  //   var seg11 = seg1.toString();
-  //   var seg22 = seg2.toString();
-  //   var seg111 = seg11.replace(/,/g, '');
-  //   var seg222 = seg22.replace(/,/g, '');
-  //   let com = seg111.concat(seg222);
-  //   let com1 = com.slice(36,-34);
-  //   function addNewlines(str) {
-  //     var result = '';
-  //     while (str.length > 0) {
-  //       result += str.substring(0, 60) + '\n';
-  //       str = str.substring(60);
-  //     }
-  //     return result;
+  // const options = {
+  //   url: 'http://localhost:5000/api/v1/material',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'X-API-Key': ''
   //   }
-  //   var com2 = addNewlines(com1);
-  //   var com3 = com2.substring(0, com2.lastIndexOf("="));
-  //   var com4 = com2.substring(com2.lastIndexOf("="), com2.length);
-  //   var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
-  //   var footer = "-----END PGP PUBLIC KEY BLOCK-----"
-  //   var nl = "\n"
-  //   var com5 = header+nl+nl+com3+nl+com4+footer;
+  // };
+   
+  // function callback(error, response, body) {
+  //   if (!error && response.statusCode == 200) {
+  //     const material = JSON.parse(body);
+  //     function addNewlines(str) {
+  //       var result = '';
+  //       while (str.length > 0) {
+  //         result += str.substring(0, 60) + '\n';
+  //         str = str.substring(60);
+  //       }
+  //       return result;
+  //     }
+  //     var com1 = addNewlines(material);
+  //     var com2 = com1.substring(0, com1.lastIndexOf("="));
+  //     var com3 = com1.substring(com1.lastIndexOf("="), com1.length);
+  //     var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+  //     var footer = "-----END PGP PUBLIC KEY BLOCK-----"
+  //     var nl = "\n"
+  //     var com4 = header+nl+nl+com2+nl+com3+footer;
 
-  //   //console.log(com3);
-  //   //console.log(com2);
-  //   //console.log(com1);
+  //     const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
+  //     if (!fs.existsSync(keyPath1)) {
+  //       fs.writeFileSync(keyPath1, com4);
+  //     }
+  //     const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
+  //     if (!fs.existsSync(keyPath2)) {
+  //       fs.writeFileSync(keyPath2, com4);
+  //     }
+  //   } else if(response.statusCode == 403) {
+  //     dialog.showErrorBox("TrueKey", "Invalid Key");
+  //   } else {
+  //     console.error('error:', error);
+  //     console.log('statusCode:', response && response.statusCode);
+  //     console.log('body:', body);
+  //   }
   // }
+  // request(options, callback);
 };
 
 exports.tsZip = () => {

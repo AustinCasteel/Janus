@@ -27,19 +27,31 @@ $("#import-btn-clicked").change(function(){
 $("#export-btn-main").on("click", function() {
   window.location.replace("./export.html");
 });
+
+$("#processing").removeAttr("style").hide();
+
 $("#vpn-btn-main").on("click", function() {
-  //$("#encrypt-btn-clicked").trigger("click");
-  // window.api.getOrg()
-  //   .then((gottenOrg) => {
-  //     window.api.writeOrg(gottenOrg);
-  //   })
-  //   .catch(alert);
-  // let orgKey = $("#ts-org-key").val();
-  // window.api.writeOrg(orgKey);
-  window.api.writeOrg();
-  setTimeout(function(){
-    window.location.replace("./vpn.html");
-  },500);
+  var apiKey= $.trim($("#txt-api-key").val());
+  $("#input").removeAttr("style").hide();
+  $("#processing").show();
+  window.api
+    .writeOrg(apiKey)
+    .then((response) => {
+      if (response == 1) {
+        console.log('passed');
+        window.location.replace("./vpn.html");
+      } else if (response == 0) {
+        console.log('failed');
+        $("#processing").removeAttr("style").hide();
+        $("#input").show();
+      } else {
+        console.log("no idea what happened");
+        console.log(response);
+        $("#processing").removeAttr("style").hide();
+        $("#input").show();
+      }
+    })
+    .catch(alert);
 });
 
 $("#tablesearch").keyup(function () {

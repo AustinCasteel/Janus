@@ -21,7 +21,7 @@
         <hr class="line-vertical-hidden"/>
         <button class="btn btn-primary" type="button" id="export-btn-main">Export</button>
         <hr class="line-vertical"/>
-        <button class="btn btn-primary" type="button" id="vpn-btn-main">Encrypt VPN Config</button>
+        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#vpnAPIModal">Encrypt VPN Config</button>
       </form>
     </nav>
     <div class="container-fluid">
@@ -49,6 +49,46 @@
               <h6 class="card-subtitle mb-2 text-muted" id="txt-key-email"></h6>
               <p class="card-text" id="txt-key-fp"></p>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+    <div class="modal fade" id="vpnAPIModal" tabindex="-1" role="dialog" aria-labelledby="vpnAPIModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="vpnAPIModalLongTitle">VPN Config Setup</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            In order to use the VPN configuration feature, you must provide an API key.
+          </div>
+          <div id="input" class="modal-body">
+            <div class="form-row">
+              <label for="txt-api-key" class="form-label">Please enter your given API key: </label>
+              <input class="form-control"
+              type="text"
+              name="api-key"
+              id="txt-api-key"
+              placeholder="00000000-0000-0000-0000-000000000000"
+              required
+              /><br />
+            </div>
+          </div>
+          <div id="processing" class="modal-body">
+            <div class="form-row">
+              <img src="../img/245.gif" loop=infinite>
+            </div>
+          </div>
+          <div class="modal-body">
+            *This feature is exclusively for TechSlayers Red Team Suite customers
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="vpn-btn-main">Proceed</button>
           </div>
         </div>
       </div>
