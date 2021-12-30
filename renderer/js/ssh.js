@@ -124,25 +124,26 @@ $("#btn-save-enc").on("click", function (e) {
 });
 
 function encryptWithKey2(keyFile) {
-  let vpnUN = $("#vpn-un").val();
-  let vpnPW = $("#vpn-pw").val();
-  let vpnConfig = $("#vpn-config").val();
+  let sshUN = $("#ssh-un").val();
+  let sshPW = $("#ssh-pw").val();
+  let sshIP = $("#ssh-ip").val();
+  let sshKEY = $("#ssh-key").val();
 
-  if (vpnUN == "") {
+  if (sshUN == "") {
     alert(
       "Username is required"
     );
     return;
   }
-  if (vpnPW == "") {
+  if (sshPW == "") {
     alert(
       "Password is required"
     );
     return;
   }
-  if (vpnConfig == "") {
+  if (sshIP == "") {
     alert(
-      "Config is required"
+      "IP/Host is required"
     );
     return;
   }
@@ -161,7 +162,7 @@ function encryptWithKey2(keyFile) {
     return;
   }
   window.api
-    .writeVpn(vpnUN, vpnPW, vpnConfig, keyFile.path, keyType == 0)
+    .writeSsh(sshUN, sshPW, sshIP, sshKEY, keyFile.path, keyType == 0)
     // .then(() => {
     //   alert('The Encrypted file was saved to your documents as "EncryptedConfig.zip.gpg"');
     // })

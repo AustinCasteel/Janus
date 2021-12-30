@@ -14,8 +14,8 @@ const keysDir = path.resolve(userData, "keys");
 fs.ensureDirSync(keysDir);
 const orgDir = path.resolve(userData, "org");
 fs.ensureDirSync(orgDir);
-const vpnDir = path.resolve(orgDir);
-fs.ensureDirSync(vpnDir);
+const tsDir = path.resolve(orgDir);
+fs.ensureDirSync(tsDir);
 
 // add files
 exports.addFiles = (files = []) => {
@@ -52,7 +52,7 @@ exports.addKey = (name, private, public) => {
 exports.addVpn = (username, password, config, path, type) => {
   let lastEncryptedMessage;
   var zipName = "config.zip"
-  var zipLoc = vpnDir
+  var zipLoc = tsDir
   var zipWrite = (zipLoc + "\\" + zipName);
   var zip = new AdmZip();
   zip.addFile("username.txt", Buffer.from(username, "utf8"), "");
@@ -64,7 +64,7 @@ exports.addVpn = (username, password, config, path, type) => {
           console.log(encryptedMessage);
           lastEncryptedMessage = encryptedMessage;
       
-          const filePath = app.getPath('documents') + '/EncryptedConfig.zip.gpg';
+          const filePath = app.getPath('documents') + '/EncryptedVPNConfig.zip.gpg';
           let options = { 
             defaultPath: filePath,
             title: "Save Encrypted VPN Config",
@@ -89,9 +89,110 @@ exports.addVpn = (username, password, config, path, type) => {
         })
 };
 
-exports.addOrg = (apiKey) => {
+exports.addSsh = (username, password, ip, key, path, type) => {
+  let lastEncryptedMessage;
+  var zipName = "config.zip"
+  var zipLoc = tsDir
+  var zipWrite = (zipLoc + "\\" + zipName);
+  var zip = new AdmZip();
+  zip.addFile("username.txt", Buffer.from(username, "utf8"), "");
+  zip.addFile("password.txt", Buffer.from(password, "utf8"), "");
+  zip.addFile("ip.txt", Buffer.from(ip, "utf8"), "");
+  zip.addFile("key.txt", Buffer.from(key, "utf8"), "");
+  zip.writeZip(zipWrite);
+  crypto.encryptConfig(path, type, zipWrite)
+        .then((encryptedMessage) => {
+          console.log(encryptedMessage);
+          lastEncryptedMessage = encryptedMessage;
+      
+          const filePath = app.getPath('documents') + '/EncryptedSSHConfig.zip.gpg';
+          let options = { 
+            defaultPath: filePath,
+            title: "Save Encrypted SSH Config",
+            buttonLabel: "Save Config File",
+            filters:[
+              {name: 'OpenPGP Encrypted File', extensions: ['gpg', 'pgp']}
+            ]
+          }
+          dialog.showSaveDialog(options).then((result) => {
+            fs.writeFile(result.filePath, lastEncryptedMessage, (err) => {
+            });
+          }).catch((err) => {
+            console.log(err);
+            dialog.showErrorBox("app", "Unable to find encrypted config file.");
+          });
+      
+      
+          // fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
+          //   if (err) return console.log(err);
+          //   console.log("saved");
+          // });
+        })
+};
+
+exports.addOrgInt = (apiKey) => {
   const key = apiKey;
-  return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material', {
+  return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material/internal', {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': key
+    }
+  })
+  .then(function (response) {
+    const material = response.data;
+    function addNewlines(str) {
+      var result = '';
+      while (str.length > 0) {
+        result += str.substring(0, 60) + '\n';
+        str = str.substring(60);
+      }
+      return result;
+    }
+    var com1 = addNewlines(material);
+    var com2 = com1.substring(0, com1.lastIndexOf("="));
+    var com3 = com1.substring(com1.lastIndexOf("="), com1.length);
+    var header = "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+    var footer = "-----END PGP PUBLIC KEY BLOCK-----"
+    var nl = "\n"
+    var com4 = header+nl+nl+com2+nl+com3+footer;
+    const keyPath1 = path.resolve(orgDir, `ts-pub.asc`);
+    const keyPath2 = path.resolve(orgDir, `ts-pvt.asc`);
+    if (fs.existsSync(keyPath1)) {
+      fs.unlinkSync(keyPath1);
+    }
+    if (fs.existsSync(keyPath2)) {
+      fs.unlinkSync(keyPath2);
+    }
+    if (!fs.existsSync(keyPath1)) {
+      fs.writeFileSync(keyPath1, com4);
+    }
+    if (!fs.existsSync(keyPath2)) {
+      fs.writeFileSync(keyPath2, com4);
+    }
+    return 1
+  })
+  .catch(function (error) {
+    if(error.response.status == 403) {
+      dialog.showErrorBox("TrueKey", "No Key Given");
+      return 0
+    } else if(error.response.status == 401) {
+      dialog.showErrorBox("TrueKey", "Invalid Key");
+      return 0
+    } else if(error.request) {
+      console.log(error.request);
+      return 0
+    } else {
+      console.error('error:', error);
+      console.log('statusCode:', error.response && error.response.status);
+      console.log('body:', error.response.data);
+      throw new Error("see above^^^");
+    }
+  });
+};
+
+exports.addOrgLoc = (apiKey) => {
+  const key = apiKey;
+  return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material/local', {
     headers: {
       'Content-Type': 'application/json',
       'X-API-Key': key

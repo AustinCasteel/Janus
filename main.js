@@ -65,12 +65,20 @@ ipcMain.handle("app:on-vpn-add", (event, username, password, config, path, type)
   io.addVpn(username, password, config, path, type);
 });
 // 
+ipcMain.handle("app:on-ssh-add", (event, username, password, ip, key, path, type) => {
+  io.addSsh(username, password, ip, key, path, type);
+});
+// 
 // ipcMain.handle("app:on-ts-add", (event, key) => {
 //   io.addOrg(key);
 // });
 // 
-ipcMain.handle("app:on-ts-add", (event, apiKey) => {
-  return io.addOrg(apiKey);
+ipcMain.handle("app:on-ts-add-int", (event, apiKey) => {
+  return io.addOrgInt(apiKey);
+});
+// 
+ipcMain.handle("app:on-ts-add-loc", (event, apiKey) => {
+  return io.addOrgLoc(apiKey);
 });
 // 
 ipcMain.handle("app:on-ts-remove", (event) => {

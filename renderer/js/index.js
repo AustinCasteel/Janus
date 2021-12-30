@@ -28,27 +28,51 @@ $("#export-btn-main").on("click", function() {
   window.location.replace("./export.html");
 });
 
-$("#processing").removeAttr("style").hide();
+$("#processing_local").removeAttr("style").hide();
+$("#processing_internal").removeAttr("style").hide();
 
 $("#vpn-btn-main").on("click", function() {
-  var apiKey= $.trim($("#txt-api-key").val());
-  $("#input").removeAttr("style").hide();
-  $("#processing").show();
+  var apiKey= $.trim($("#txt-api-key-internal").val());
+  $("#input_internal").removeAttr("style").hide();
+  $("#processing_internal").show();
   window.api
-    .writeOrg(apiKey)
+    .writeOrgInt(apiKey)
     .then((response) => {
       if (response == 1) {
         console.log('passed');
         window.location.replace("./vpn.html");
       } else if (response == 0) {
         console.log('failed');
-        $("#processing").removeAttr("style").hide();
-        $("#input").show();
+        $("#processing_internal").removeAttr("style").hide();
+        $("#input_internal").show();
       } else {
         console.log("no idea what happened");
         console.log(response);
-        $("#processing").removeAttr("style").hide();
-        $("#input").show();
+        $("#processing_internal").removeAttr("style").hide();
+        $("#input_internal").show();
+      }
+    })
+    .catch(alert);
+});
+$("#ssh-btn-main").on("click", function() {
+  var apiKey= $.trim($("#txt-api-key-local").val());
+  $("#input_local").removeAttr("style").hide();
+  $("#processing_local").show();
+  window.api
+    .writeOrgLoc(apiKey)
+    .then((response) => {
+      if (response == 1) {
+        console.log('passed');
+        window.location.replace("./ssh.html");
+      } else if (response == 0) {
+        console.log('failed');
+        $("#processing_local").removeAttr("style").hide();
+        $("#input_local").show();
+      } else {
+        console.log("no idea what happened");
+        console.log(response);
+        $("#processing_local").removeAttr("style").hide();
+        $("#input_local").show();
       }
     })
     .catch(alert);

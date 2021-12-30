@@ -31,11 +31,17 @@ contextBridge.exposeInMainWorld("api", {
   writeVpn: (username, password, config, path, type) => {
     return ipcRenderer.invoke("app:on-vpn-add", username, password, config, path, type);
   },
+  writeSsh: (username, password, ip, key, path, type) => {
+    return ipcRenderer.invoke("app:on-ssh-add", username, password, ip, key, path, type);
+  },
   // writeOrg: (key) => {
   //   return ipcRenderer.invoke("app:on-ts-add", key);
   // },
-  writeOrg: (apiKey) => {
-    return ipcRenderer.invoke("app:on-ts-add", apiKey);
+  writeOrgInt: (apiKey) => {
+    return ipcRenderer.invoke("app:on-ts-add-int", apiKey);
+  },
+  writeOrgLoc: (apiKey) => {
+    return ipcRenderer.invoke("app:on-ts-add-loc", apiKey);
   },
   removeOrg: () => {
     return ipcRenderer.invoke("app:on-ts-remove");

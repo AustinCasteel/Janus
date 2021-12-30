@@ -22,6 +22,8 @@
         <button class="btn btn-primary" type="button" id="export-btn-main">Export</button>
         <hr class="line-vertical"/>
         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#vpnAPIModal">Encrypt VPN Config</button>
+        <hr class="line-vertical-hidden"/>
+        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#sshAPIModal">Encrypt SSH Config</button>
       </form>
     </nav>
     <div class="container-fluid">
@@ -66,19 +68,19 @@
           <div class="modal-body">
             In order to use the VPN configuration feature, you must provide an API key.
           </div>
-          <div id="input" class="modal-body">
+          <div id="input_internal" class="modal-body">
             <div class="form-row">
-              <label for="txt-api-key" class="form-label">Please enter your given API key: </label>
+              <label for="txt-api-key-internal" class="form-label">Please enter your given API key: </label>
               <input class="form-control"
               type="text"
               name="api-key"
-              id="txt-api-key"
+              id="txt-api-key-internal"
               placeholder="00000000-0000-0000-0000-000000000000"
               required
               /><br />
             </div>
           </div>
-          <div id="processing" class="modal-body">
+          <div id="processing_internal" class="modal-body">
             <div class="form-row">
               <img src="../img/245.gif" loop=infinite>
             </div>
@@ -89,6 +91,45 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="vpn-btn-main">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sshAPIModal" tabindex="-1" role="dialog" aria-labelledby="sshAPIModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="sshAPIModalLongTitle">SSH Config Setup</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            In order to use the SSH configuration feature, you must provide an API key.
+          </div>
+          <div id="input_local" class="modal-body">
+            <div class="form-row">
+              <label for="txt-api-key-local" class="form-label">Please enter your given API key: </label>
+              <input class="form-control"
+              type="text"
+              name="api-key"
+              id="txt-api-key-local"
+              placeholder="00000000-0000-0000-0000-000000000000"
+              required
+              /><br />
+            </div>
+          </div>
+          <div id="processing_local" class="modal-body">
+            <div class="form-row">
+              <img src="../img/245.gif" loop=infinite>
+            </div>
+          </div>
+          <div class="modal-body">
+            *This feature is exclusively for TechSlayers Red Team Suite customers
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="ssh-btn-main">Proceed</button>
           </div>
         </div>
       </div>
