@@ -13,8 +13,8 @@ function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: app.name,
-    width: 1280,
-    height: 720,
+    width: 1920,
+    height: 1080,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true
@@ -26,6 +26,7 @@ function createWindow() {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+
 }
 
 // This method will be called when Electron has finished
@@ -118,7 +119,7 @@ ipcMain.handle("app:download-private-key", (event, private) => {
 
 const menuTemplate = Menu.buildFromTemplate([
   {
-    role: 'fileMenu'
+    role: 'fileMenu',
   },
   {
   	role: 'viewMenu'

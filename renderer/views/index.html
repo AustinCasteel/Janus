@@ -2,29 +2,77 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"/>
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>TrueKey</title>
+    <link id="theme" rel="stylesheet" media="all" href="../css/themes/faltly/bootstrap.min.css">
     <link rel="stylesheet" href="../css/app.global.css" />
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <form class="form-inline">
-        <button class="btn btn-primary" type="button" id="encrypt-btn-main">Encrypt</button>
-        <hr class="line-vertical-hidden"/>
-        <button class="btn btn-primary" type="button" id="decrypt-btn-main">Decrypt</button>
-        <hr class="line-vertical"/>
-        <button class="btn btn-primary" type="button" id="new_pair-btn-main">New Key Pair</button>
-        <hr class="line-vertical-hidden"/>
-        <button class="btn btn-primary" type="button" id="import-btn-main">Import</button>
-        <hr class="line-vertical-hidden"/>
-        <button class="btn btn-primary" type="button" id="export-btn-main">Export</button>
-        <hr class="line-vertical"/>
-        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#vpnAPIModal">Encrypt VPN Config</button>
-        <hr class="line-vertical-hidden"/>
-        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#sshAPIModal">Encrypt SSH Config</button>
-      </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarColor02">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" id="encrypt-btn-main">Encrypt</button>
+            </li>
+            <hr class="line-vertical-hidden"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" id="decrypt-btn-main">Decrypt</button>
+            </li>
+            <hr class="line-vertical"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" id="new_pair-btn-main">New Key Pair</button>
+            </li>
+            <hr class="line-vertical-hidden"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" id="import-btn-main">Import</button>
+            </li>
+            <hr class="line-vertical-hidden"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" id="export-btn-main">Export</button>
+            </li>
+            <hr class="line-vertical"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#vpnAPIModal">Encrypt VPN Config</button>
+            </li>
+            <hr class="line-vertical-hidden"/>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#sshAPIModal">Encrypt SSH Config</button>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <select id="themeselect" class="form-select" aria-label="Default select example">
+              <option selected>Theme...</option>
+              <option value="cerulean">Cerulean</option>
+              <option value="cosmo">Cosmo</option>
+              <option value="cyborg">Cyborg</option>
+              <option value="darkly">Darkly</option>
+              <option value="flatly">Flatly</option>
+              <option value="journal">Journal</option>
+              <option value="litera">Litera</option>
+              <option value="lumen">Lumen</option>
+              <option value="lux">Lux</option>
+              <option value="materia">Materia</option>
+              <option value="minty">Minty</option>
+              <option value="morph">Morph</option>
+              <option value="pulse">Pulse</option>
+              <option value="quartz">Quartz</option>
+              <option value="regent">Regent</option>
+              <option value="sandstone">Sandstone</option>
+              <option value="simplex">Simplex</option>
+              <option value="sketchy">Sketchy</option>
+              <option value="slate">Slate</option>
+              <option value="solar">Solar</option>
+              <option value="spacelab">Spacelab</option>
+              <option value="superhero">Superhero</option>
+              <option value="united">United</option>
+              <option value="vapor">Vapor</option>
+              <option value="yeti">Yeti</option>
+              <option value="zephyr">Zephyr</option>
+            </select>
+          </form>
+        </div>
+      </div>
     </nav>
     <div class="container-fluid">
       <h4>Information:</h4>

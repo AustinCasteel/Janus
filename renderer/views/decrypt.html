@@ -6,24 +6,32 @@
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>Decrypt Files - TrueKey</title>
+    <link id="theme" rel="stylesheet" media="all" href="../css/themes/faltly/bootstrap.min.css">
     <link rel="stylesheet" href="../css/app.global.css" />
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <form class="form-inline">
-        <button class="btn btn-primary" type="button" id="SEF-cancel-btn">Back</button>
-      </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+          <button class="btn btn-primary" type="button" id="SEF-cancel-btn">Back</button>
+        </div>
+      </div>
     </nav>
-    <hr />
+    <br /><br />
     <div class="container-fluid">
       <h4>Select Private Key:</h4>
-      <div class="form-row">
-        <div class="col">
-          <label for="sel-key">Stored keys:</label><br />
-          <select class="form-control" id="sel-keys"></select>
+      <div class="row">
+        <div class="col align-self-center text-center">
+          <div class="form-group">
+            <label for="sel-key" class="form-label mt-4">Stored keys:</label>
+            <select class="form-select" id="sel-keys"></select>
+          </div>
         </div>
-        <div id="pw" class="col">
-          <div class="col">
+        <div id="pw1" class="col align-self-center text-center">
+          <div class="form-group">
             <label for="txt-passphrase">Please enter key password:</label>
             <input class="form-control"
               type="password"
@@ -37,40 +45,25 @@
     </div>
     <br />
     <hr />
-    <div class="container-fluid">
+    <div id="pw2" class="container-fluid">
       <h4>Decryption:</h4>
-      <div class="container">
-        <div class="form-row">
-          <div class="col-4 align-self-center text-center">
+      <div class="row">
+        <div class="col-lg-4 align-self-center text-center">
+          <div class="form-group">
             <label for="file-encrypted">Encrypted file:</label>
             <input type="file" id="file-encrypted" />
-            <br /><br />
-            <!-- <label for="txt-encrypted">Encrypted Message: </label><br />
-            <textarea 
-              class="form-control"
-              rows="5"
-              cols="30"
-              name="txt-encrypted"
-              id="txt-encrypted"
-            ></textarea> -->
           </div>
-          <div class="col-4 align-self-center text-center">
+        </div>
+        <div class="col-lg-4 align-self-center text-center">
+          <div class="form-group">
             <button class="btn btn-primary btn-lg" id="btn-decrypt">Decrypt</button>
-            <img src="../img/245.gif" loop=infinite id="processing">
+            <img src="./img/245.gif" loop=infinite id="processing">
           </div>
-          <div id="save-dec-section" class="col-4 align-self-center text-center">
+        </div>
+        <div id="save-dec-section" class="col-lg-4 align-self-center text-center">
+          <div class="form-group">
             <label>Decrypted file:</label><br />
-            <!-- <button class="btn btn-primary" id="btn-show">View</button> -->
-            <button class="btn btn-success" id="btn-save">Save</button
-            ><br />
-            <!-- <label for="txt-decrypted">Plain Message: </label><br />
-            <textarea
-              class="form-control"
-              rows="5"
-              cols="30"
-              name="txt-decrypted"
-              id="txt-decrypted"
-            ></textarea> -->
+            <button class="btn btn-success" id="btn-save">Save</button>
           </div>
         </div>
       </div>
