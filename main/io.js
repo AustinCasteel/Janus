@@ -54,18 +54,18 @@ exports.addVpn = (username, password, config, path, type) => {
   var zipName = "config.zip"
   var zipLoc = tsDir
   var zipWrite = (zipLoc + "\\" + zipName);
+  var nl = "\n"
+  var com = username+nl+password+nl+config
   var zip = new AdmZip();
-  zip.addFile("username.txt", Buffer.from(username, "utf8"), "");
-  zip.addFile("password.txt", Buffer.from(password, "utf8"), "");
-  zip.addFile("config.txt", Buffer.from(config, "utf8"), "");
+  zip.addFile("config.txt", Buffer.from(com, "utf8"), "");
   zip.writeZip(zipWrite);
   crypto.encryptConfig(path, type, zipWrite)
         .then((encryptedMessage) => {
           console.log(encryptedMessage);
           lastEncryptedMessage = encryptedMessage;
-      
+
           const filePath = app.getPath('documents') + '/EncryptedVPNConfig.zip.gpg';
-          let options = { 
+          let options = {
             defaultPath: filePath,
             title: "Save Encrypted VPN Config",
             buttonLabel: "Save Config File",
@@ -80,8 +80,8 @@ exports.addVpn = (username, password, config, path, type) => {
             console.log(err);
             dialog.showErrorBox("app", "Unable to find encrypted config file.");
           });
-      
-      
+
+
           // fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
           //   if (err) return console.log(err);
           //   console.log("saved");
@@ -104,9 +104,9 @@ exports.addSsh = (username, password, ip, key, path, type) => {
         .then((encryptedMessage) => {
           console.log(encryptedMessage);
           lastEncryptedMessage = encryptedMessage;
-      
+
           const filePath = app.getPath('documents') + '/EncryptedSSHConfig.zip.gpg';
-          let options = { 
+          let options = {
             defaultPath: filePath,
             title: "Save Encrypted SSH Config",
             buttonLabel: "Save Config File",
@@ -121,8 +121,8 @@ exports.addSsh = (username, password, ip, key, path, type) => {
             console.log(err);
             dialog.showErrorBox("app", "Unable to find encrypted config file.");
           });
-      
-      
+
+
           // fs.writeFile(app.getPath('documents') + '/EncryptedConfig.zip.gpg', lastEncryptedMessage, function (err) {
           //   if (err) return console.log(err);
           //   console.log("saved");
@@ -273,7 +273,7 @@ exports.getOrg = () => {
   //     'X-API-Key': ''
   //   }
   // };
-   
+
   // function callback(error, response, body) {
   //   if (!error && response.statusCode == 200) {
   //     const material = JSON.parse(body);
@@ -421,7 +421,7 @@ exports.downloadPublicKey = (privateKeyName) => {
   try {
     const filePath = path.resolve(keysDir, publicKeyFile);
     const keyContent = fs.readFileSync(filePath);
-    let options = { 
+    let options = {
       defaultPath: publicKeyFile,
       title: "Export Certificates",
       buttonLabel: "Save Public Key",
@@ -456,7 +456,7 @@ exports.downloadPrivateKey = (privateKeyName) => {
   try {
     const filePath = path.resolve(keysDir, privateKeyFile);
     const keyContent = fs.readFileSync(filePath);
-    let options = { 
+    let options = {
       defaultPath: privateKeyFile,
       title: "Export Certificates",
       buttonLabel: "Save Private Key",
