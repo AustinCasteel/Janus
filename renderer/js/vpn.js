@@ -1,9 +1,9 @@
-$("#SEF-cancel-btn").on("click", function() {
+$("#SEF-cancel-btn").on("click", function () {
   window.api.removeOrg();
   window.location.replace("./index.html");
 });
 
-$("#save-enc-section").removeAttr("style").hide(); 
+$("#save-enc-section").removeAttr("style").hide();
 $("#pw").removeAttr("style").hide();
 $("#processing").removeAttr("style").hide();
 
@@ -40,7 +40,7 @@ $("#sel-keys")
       })
       .catch(alert);
 
-      $("#pw").show();
+    $("#pw").show();
   });
 
 $("#btn-export-key").on("click", (e) => {
@@ -202,17 +202,17 @@ function encryptWithKey(keyFile) {
       })
       .catch(alert);
     return;
-  // } else if (plainMessage && !plainMessage.empty) {
-  //   console.log(plainMessage);
-  //   window.api.crypto
-  //     .encryptText(keyFile.path, keyType == 0, plainMessage)
-  //     .then((encryptedMessage) => {
-  //       console.log(encryptedMessage);
-  //       lastEncryptedMessage = encryptedMessage;
-  //       alert("Data was encrypted successfully. Remember Save it!");
-  //     })
-  //     .catch(alert);
-  //   return;
+    // } else if (plainMessage && !plainMessage.empty) {
+    //   console.log(plainMessage);
+    //   window.api.crypto
+    //     .encryptText(keyFile.path, keyType == 0, plainMessage)
+    //     .then((encryptedMessage) => {
+    //       console.log(encryptedMessage);
+    //       lastEncryptedMessage = encryptedMessage;
+    //       alert("Data was encrypted successfully. Remember Save it!");
+    //     })
+    //     .catch(alert);
+    //   return;
   } else {
     alert("Please provide an plain file or paste in text box");
     return;
@@ -290,7 +290,7 @@ if (localStorage.getItem("theme") === null) {
   $("#theme").attr("href", "../css/themes/flatly/bootstrap.min.css");
   localStorage.setItem("theme", "flatly");
 } else if (currentTheme == "cerulean") {
-	$("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
+  $("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
   localStorage.setItem("theme", "cerulean");
 } else if (currentTheme == "cosmo") {
   $("#theme").attr("href", "../css/themes/cosmo/bootstrap.min.css");

@@ -75,32 +75,28 @@
       </div>
     </nav>
     <div class="container-fluid">
-      <h4>Information:</h4>
-      <div class="form-row">
-        <p>Welcome to TrueKey</p>
-      </div>
-      <div class="form-row">
-        <p>Currently you are able to generate and save new key pairs, encrypt & decrypt files, & export generated keys</p>
-      </div>
+      <h3>Welcome to TrueKey</h3>
+      <p>Preview stored keys...</p>
     </div>
     <br /><br />
     <!--  -->
-    <div class="container-fuild">
-      <div class="form-row p-1">
-        <div class="col align-self-center">
-          <label for="sel-key">Stored keys:</label><br />
-          <select class="form-control" id="sel-keys"></select>
+    <div class="container-fluid">
+      <div class="row">
+      <div class="col-lg-6 align-self-center">
+        <div class="form-group">
+        <label for="sel-key" class="form-label mt-4">Stored keys:</label>
+        <select class="form-select" id="sel-keys"></select>
         </div>
-        <div class="col align-self-center">
-          <div class="card">
-            <img class="card-img-top" id="img-key" />
-            <div class="card-body">
-              <h5 class="card-title" id="txt-key-id">Key information</h5>
-              <h6 class="card-subtitle mb-2 text-muted" id="txt-key-email"></h6>
-              <p class="card-text" id="txt-key-fp"></p>
-            </div>
-          </div>
+      </div>
+      <div class="col-lg-6 align-self-center">
+        <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Key information</h4>
+          <h6 class="card-subtitle mb-2 text-muted" id="txt-key-email"></h6>
+          <p class="card-text" id="txt-key-fp"></p>
         </div>
+        </div>
+      </div>
       </div>
     </div>
     <br /><br />

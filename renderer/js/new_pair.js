@@ -1,26 +1,26 @@
-$("#generated-save-btn").on("click", function() {
+$("#generated-save-btn").on("click", function () {
   var pvt_save = $.trim($("#txt-pvt-key").val());
   var pub_save = $.trim($('#txt-pub-key').val());
   var finger_save = $.trim($('#txt-fingerprint').val());
   const userName = $("#txt-full-name").val();
   const keyName = userName.replace(" ", "-");
   var zip = new JSZip();
-  if($('#pvt-key-include').prop("checked") == true){
-    zip.file(keyName+"-private.asc", pvt_save);
+  if ($('#pvt-key-include').prop("checked") == true) {
+    zip.file(keyName + "-private.asc", pvt_save);
   }
-  zip.file(keyName+"-public.asc", pub_save);
-  zip.file(keyName+"-fingerprint.txt", finger_save);
-  zip.generateAsync({type:"blob"})
-  .then(function(content) {
-      saveAs(content, keyName+"-generated-keys.zip");
-  });
+  zip.file(keyName + "-public.asc", pub_save);
+  zip.file(keyName + "-fingerprint.txt", finger_save);
+  zip.generateAsync({ type: "blob" })
+    .then(function (content) {
+      saveAs(content, keyName + "-generated-keys.zip");
+    });
 });
 
 $("#2-1").removeAttr("style").hide();
 $("#2-2").removeAttr("style").hide();
 $("#2-3").removeAttr("style").hide();
 
-$("#SEF-cancel-btn").on("click", function() {
+$("#SEF-cancel-btn").on("click", function () {
   window.location.replace("./index.html");
 });
 
@@ -79,14 +79,14 @@ $("#private-cpy-btn").on("click", function (e) {
   var copyText = document.getElementById("txt-pvt-key");
   copyText.select();
   document.execCommand("copy");
-  alert("Copied the key: " + copyText.value.substring(0,37));
+  alert("Copied the key: " + copyText.value.substring(0, 37));
 });
 $("#public-cpy-btn").on("click", function (e) {
   e.preventDefault();
   var copyText = document.getElementById("txt-pub-key");
   copyText.select();
   document.execCommand("copy");
-  alert("Copied the key: " + copyText.value.substring(0,36));
+  alert("Copied the key: " + copyText.value.substring(0, 36));
 });
 $("#fingerprint-cpy-btn").on("click", function (e) {
   e.preventDefault();
@@ -97,9 +97,9 @@ $("#fingerprint-cpy-btn").on("click", function (e) {
 });
 
 function toHex(buffer) {
-return Array.prototype.map
-  .call(buffer, (x) => ("00" + x.toString(16)).slice(-2))
-  .join("");
+  return Array.prototype.map
+    .call(buffer, (x) => ("00" + x.toString(16)).slice(-2))
+    .join("");
 }
 
 const currentTheme = localStorage.getItem("theme");
@@ -108,7 +108,7 @@ if (localStorage.getItem("theme") === null) {
   $("#theme").attr("href", "../css/themes/flatly/bootstrap.min.css");
   localStorage.setItem("theme", "flatly");
 } else if (currentTheme == "cerulean") {
-	$("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
+  $("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
   localStorage.setItem("theme", "cerulean");
 } else if (currentTheme == "cosmo") {
   $("#theme").attr("href", "../css/themes/cosmo/bootstrap.min.css");

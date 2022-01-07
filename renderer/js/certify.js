@@ -1,5 +1,5 @@
-$("#SEF-cancel-btn").on("click", function() {
-    window.location.replace("./index.html");
+$("#SEF-cancel-btn").on("click", function () {
+  window.location.replace("./index.html");
 });
 
 const currentTheme = localStorage.getItem("theme");
@@ -8,7 +8,7 @@ if (localStorage.getItem("theme") === null) {
   $("#theme").attr("href", "../css/themes/flatly/bootstrap.min.css");
   localStorage.setItem("theme", "flatly");
 } else if (currentTheme == "cerulean") {
-	$("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
+  $("#theme").attr("href", "../css/themes/cerulean/bootstrap.min.css");
   localStorage.setItem("theme", "cerulean");
 } else if (currentTheme == "cosmo") {
   $("#theme").attr("href", "../css/themes/cosmo/bootstrap.min.css");
