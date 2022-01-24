@@ -12,7 +12,7 @@ require('update-electron-app')()
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    title: app.name,
+    title: "TrueKey",
     width: 1920,
     height: 1080,
     webPreferences: {

@@ -27,6 +27,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.54",
     "@electron-forge/publisher-github": "^6.0.0-beta.54",
     "electron": "^12.0.0"
   },
@@ -54,7 +55,8 @@
           "config": {
             "name": "TrueKey",
             "description": "Simple and Portable Key Management Software",
-            "loadingGif": "/a/TrueKey/TrueKey/renderer/img/245.gif"
+            "loadingGif": "/a/TrueKey/TrueKey/assets/245.gif",
+            "iconUrl": "/a/TrueKey/TrueKey/assets/icon.ico"
           }
         },
         {
@@ -64,19 +66,44 @@
           ]
         },
         {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "title": "TrueKey",
+            "icon": "/a/TrueKey/TrueKey/assets/icon.icns",
+            "background": "/a/TrueKey/TrueKey/assets/background@2x.png",
+            "contents": [
+              {
+                "x": 396,
+                "y": 345,
+                "type": "link",
+                "path": "/Applications"
+              },
+              {
+                "x": 396,
+                "y": 110,
+                "type": "file"
+              }
+            ],
+            "window": {
+              "width": 660,
+              "height": 480
+            }
+          }
+        },
+        {
           "name": "@electron-forge/maker-deb",
           "config": {
             "productName": "TrueKey",
-            "executableName": "TrueKey",
-            "description": "Simple and Portable Key Management Software"
+            "description": "Simple and Portable Key Management Software",
+            "icon": "/a/TrueKey/TrueKey/assets/icon.png"
           }
         },
         {
           "name": "@electron-forge/maker-rpm",
           "config": {
             "productName": "TrueKey",
-            "executableName": "TrueKey",
-            "description": "Simple and Portable Key Management Software"
+            "description": "Simple and Portable Key Management Software",
+            "icon": "/a/TrueKey/TrueKey/assets/icon.png"
           }
         }
       ],
