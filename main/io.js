@@ -135,7 +135,7 @@ exports.addOrgInt = (apiKey) => {
   return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material/internal', {
     headers: {
       'Content-Type': 'application/json',
-      'X-API-Key': key
+      //'X-API-Key': key
     }
   })
   .then(function (response) {
@@ -195,7 +195,7 @@ exports.addOrgLoc = (apiKey) => {
   return axios.get('https://vpn-config-api.herokuapp.com/api/v1/material/local', {
     headers: {
       'Content-Type': 'application/json',
-      'X-API-Key': key
+      //'X-API-Key': key
     }
   })
   .then(function (response) {
