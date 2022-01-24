@@ -55,8 +55,8 @@
           "config": {
             "name": "TrueKey",
             "description": "Simple and Portable Key Management Software",
-            "loadingGif": "/a/TrueKey/TrueKey/assets/245.gif",
-            "iconUrl": "/a/TrueKey/TrueKey/assets/icon.ico"
+            "loadingGif": "./assets/245.gif",
+            "iconUrl": "./assets/icon.ico"
           }
         },
         {
@@ -69,8 +69,8 @@
           "name": "@electron-forge/maker-dmg",
           "config": {
             "title": "TrueKey",
-            "icon": "/a/TrueKey/TrueKey/assets/icon.icns",
-            "background": "/a/TrueKey/TrueKey/assets/background@2x.png",
+            "icon": "./assets/icon.icns",
+            "background": "./assets/background@2x.png",
             "contents": [
               {
                 "x": 396,
@@ -95,7 +95,7 @@
           "config": {
             "productName": "TrueKey",
             "description": "Simple and Portable Key Management Software",
-            "icon": "/a/TrueKey/TrueKey/assets/icon.png"
+            "icon": "./assets/icon.png"
           }
         },
         {
@@ -103,7 +103,7 @@
           "config": {
             "productName": "TrueKey",
             "description": "Simple and Portable Key Management Software",
-            "icon": "/a/TrueKey/TrueKey/assets/icon.png"
+            "icon": "./assets/icon.png"
           }
         }
       ],
