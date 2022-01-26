@@ -86,8 +86,12 @@
               }
             ],
             "window": {
-              "width": 660,
-              "height": 480
+              "size": [
+                {
+                  "width": 660,
+                  "height": 480
+                }
+              ]
             }
           }
         },
