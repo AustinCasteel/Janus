@@ -56,7 +56,7 @@
             "name": "TrueKey",
             "description": "Simple and Portable Key Management Software",
             "loadingGif": "/a/TrueKey/TrueKey/renderer/img/245.gif",
-            "iconUrl": "/a/TrueKey/TrueKey/renderer/img/icon.ico"
+            "iconUrl": "https://raw.githubusercontent.com/Tech-Slayers/TrueKey/dev/renderer/img/icon.ico"
           }
         },
         {
