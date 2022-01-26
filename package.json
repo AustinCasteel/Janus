@@ -48,7 +48,7 @@
       "packagerConfig": {
         "name": "truekey",
         "executableName": "truekey",
-        "icon": "/Users/runner/work/TrueKey/TrueKey/renderer/img/icon"
+        "icon": "./renderer/img/icon"
       },
       "makers": [
         {
