@@ -13,7 +13,7 @@ function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: "RTS Encryption Manager",
-    icon: "renderer/img/icon.ico",
+    icon: path.join(__dirname, "renderer/img/icon.png"),
     width: 1920,
     height: 1080,
     webPreferences: {
