@@ -47,7 +47,8 @@
     "forge": {
       "packagerConfig": {
         "name": "truekey",
-        "executableName": "truekey"
+        "executableName": "truekey",
+        "icon": "/renderer/img/icon"
       },
       "makers": [
         {
@@ -69,8 +70,8 @@
           "name": "@electron-forge/maker-dmg",
           "config": {
             "title": "TrueKey",
-            "icon": "https://raw.githubusercontent.com/Tech-Slayers/TrueKey/dev/renderer/img/icon.icns",
-            "background": "https://raw.githubusercontent.com/Tech-Slayers/TrueKey/dev/renderer/img/background@2x.png",
+            "icon": "/Users/runner/work/TrueKey/TrueKey/renderer/img/icon.icns",
+            "background": "/Users/runner/work/TrueKey/TrueKey/renderer/img/background@2x.png",
             "contents": [
               {
                 "x": 396,
