@@ -12,7 +12,8 @@ require('update-electron-app')()
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    title: "TrueKey",
+    title: "RTS Encryption Manager",
+    icon: "renderer/img/icon.ico",
     width: 1920,
     height: 1080,
     webPreferences: {
@@ -131,7 +132,7 @@ const menuTemplate = Menu.buildFromTemplate([
         label: 'About',
         click() {
           showAboutWindow({
-            icon: path.join(__dirname, 'renderer/Icon.png'),
+            icon: path.join(__dirname, 'renderer/img/icon.png'),
             copyright: 'Copyright © TechSlayers & Austin Casteel',
           });
         }

@@ -173,10 +173,10 @@ exports.addOrgInt = (apiKey) => {
   })
   .catch(function (error) {
     if(error.response.status == 403) {
-      dialog.showErrorBox("TrueKey", "No Key Given");
+      dialog.showErrorBox("RTS EM", "No Key Given");
       return 0
     } else if(error.response.status == 401) {
-      dialog.showErrorBox("TrueKey", "Invalid Key");
+      dialog.showErrorBox("RTS EM", "Invalid Key");
       return 0
     } else if(error.request) {
       console.log(error.request);
@@ -233,10 +233,10 @@ exports.addOrgLoc = (apiKey) => {
   })
   .catch(function (error) {
     if(error.response.status == 403) {
-      dialog.showErrorBox("TrueKey", "No Key Given");
+      dialog.showErrorBox("RTS EM", "No Key Given");
       return 0
     } else if(error.response.status == 401) {
-      dialog.showErrorBox("TrueKey", "Invalid Key");
+      dialog.showErrorBox("RTS EM", "Invalid Key");
       return 0
     } else if(error.request) {
       console.log(error.request);
@@ -302,7 +302,7 @@ exports.getOrg = () => {
   //       fs.writeFileSync(keyPath2, com4);
   //     }
   //   } else if(response.statusCode == 403) {
-  //     dialog.showErrorBox("TrueKey", "Invalid Key");
+  //     dialog.showErrorBox("RTS EM", "Invalid Key");
   //   } else {
   //     console.error('error:', error);
   //     console.log('statusCode:', response && response.statusCode);
