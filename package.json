@@ -81,7 +81,8 @@
               {
                 "x": 396,
                 "y": 110,
-                "type": "file"
+                "type": "file",
+                "path": "truekey.app"
               }
             ],
             "window": {
