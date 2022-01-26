@@ -58,7 +58,7 @@
             "description": "Simple and Portable Key Management Software",
             "loadingGif": "/a/TrueKey/TrueKey/renderer/img/245.gif",
             "iconUrl": "https://raw.githubusercontent.com/Tech-Slayers/TrueKey/dev/renderer/img/icon.ico",
-            "setupIcon": "https://raw.githubusercontent.com/Tech-Slayers/TrueKey/dev/renderer/img/icon.ico"
+            "setupIcon": "/a/TrueKey/TrueKey/renderer/img/icon.ico"
           }
         },
         {
