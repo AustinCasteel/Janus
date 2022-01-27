@@ -122,24 +122,24 @@ $("#btn-save-enc").on("click", function (e) {
   element.download = lastEncryptedMessage.path ?? "EncryptedConfig.zip.gpg";
   element.click();
 });
-
+ 
 function encryptWithKey2(keyFile) {
   let vpnUN = $("#vpn-un").val();
   let vpnPW = $("#vpn-pw").val();
   let vpnConfig = $("#vpn-config").val();
 
-  if (vpnUN == "") {
-    alert(
-      "Username is required"
-    );
-    return;
-  }
-  if (vpnPW == "") {
-    alert(
-      "Password is required"
-    );
-    return;
-  }
+  // if (vpnUN == "") {
+  //   alert(
+  //     "Username is required"
+  //   );
+  //   return;
+  // }
+  // if (vpnPW == "") {
+  //   alert(
+  //     "Password is required"
+  //   );
+  //   return;
+  // }
   if (vpnConfig == "") {
     alert(
       "Config is required"
